@@ -3,23 +3,28 @@ namespace Config;
 
 class Enrutador {
     public static function run(Request $request) {
-        $controlador = ucfirst($request->getControlador()) . "Controller"; 
-        $ruta = ROOT . "Controllers" . DS . $controlador . ".php"; 
-        $metodo = $request->getMetodo();
-        $argumento = $request->getArgumento();
+        $controlador = $request->getControlador() . "Controller";
+        $rutaControlador = "Controllers/" . $controlador . ".php";
 
-        if (is_readable($ruta)) {
-            require_once $ruta;
-            $mostrar = "Controllers\\" . $controlador;
-            $controlador = new $mostrar;
+        if (is_readable($rutaControlador)) {
+            require_once $rutaControlador;
+            $controlador = "Controllers\\" . $controlador;
+            $objControlador = new $controlador;
 
-            if (empty($argumento)) {
-                call_user_func([$controlador, $metodo]);
+            $metodo = $request->getMetodo();
+            $argumentos = $request->getArgumentos();
+
+            if (method_exists($objControlador, $metodo)) {
+                if (!empty($argumentos)) {
+                    call_user_func_array([$objControlador, $metodo], $argumentos);
+                } else {
+                    call_user_func([$objControlador, $metodo]);
+                }
             } else {
-                call_user_func_array([$controlador, $metodo], $argumento);
+                echo "Método <strong>$metodo</strong> no encontrado.";
             }
         } else {
-            echo "Error 404: Controlador no encontrado.";
+            echo "Controlador <strong>$controlador</strong> no encontrado.";
         }
     }
 }

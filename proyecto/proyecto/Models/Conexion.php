@@ -1,28 +1,33 @@
 <?php
-namespace Config;
+namespace Models;
 
 use PDO;
 use PDOException;
 
-class Database {
-    private $host = 'localhost'; 
-    private $dbname = 'TocciCars'; 
-    private $username = 'root'; 
-    private $password = ''; 
+class Conexion {
+    private $host = 'localhost';
+    private $dbname = 'toccicars';
+    private $username = 'root';
+    private $password = '';
     private $conn;
 
-    
-    public function getConnection() {
-        $this->conn = null;
-
+    public function __construct() {
         try {
             $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->dbname, $this->username, $this->password);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            echo "Error de conexión: " . $e->getMessage();
+            die("Error de conexión: " . $e->getMessage());
         }
+    }
 
-        return $this->conn;
+    public function consultaSimple($sql) {
+        $this->conn->exec($sql);
+    }
+
+    public function consultaRetorno($sql) {
+        $stmt = $this->conn->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 ?>
+

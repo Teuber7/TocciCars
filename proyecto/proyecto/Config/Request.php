@@ -4,12 +4,12 @@ namespace Config;
 class Request {
     private $controlador;
     private $metodo;
-    private $argumento;
+    private $argumentos;
 
-    public function __construct($controlador, $metodo, $argumento = []) {
+    public function __construct($controlador = 'autos', $metodo = 'index', $argumentos = []) {
         $this->controlador = $controlador;
         $this->metodo = $metodo;
-        $this->argumento = $argumento;
+        $this->argumentos = $argumentos;
     }
 
     public function getControlador() {
@@ -20,8 +20,8 @@ class Request {
         return $this->metodo;
     }
 
-    public function getArgumento() {
-        return $this->argumento;
+    public function getArgumentos() {
+        return $this->argumentos;
     }
 }
 ?>

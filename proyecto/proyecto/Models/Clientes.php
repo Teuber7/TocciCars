@@ -1,6 +1,8 @@
 <?php
 namespace Models;
 
+use Models\Conexion;
+
 class Clientes {
     private $id;
     private $nombre;
@@ -15,7 +17,7 @@ class Clientes {
     private $con;
 
     public function __construct() {
-        $this->con = new Conexion();
+        $this->con = new Conexion(); // Asegúrate de que esta clase esté incluida correctamente.
     }
 
     public function set($atributo, $valor) {
@@ -36,6 +38,5 @@ class Clientes {
         ('{$this->nombre}', '{$this->apellido}', '{$this->documento}', '{$this->direccion}', '{$this->telefono}', '{$this->correo}', '{$this->fechaNacimiento}', '{$this->licenciaConducir}')";
         $this->con->consultaSimple($sql);
     }
-    
 }
 ?>
